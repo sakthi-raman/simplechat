@@ -1,0 +1,13 @@
+{
+  "name": "simplechat",
+  "version": "1.0.0",
+  "description": "Simple chat application",
+  "main": "index.js",
+  "dependencies" : {
+	"express":	"*",
+	"socket.io": "*",
+	"ejs": "*"
+  },
+  "author": "Sakthi",
+  "license": "ISC"
+}

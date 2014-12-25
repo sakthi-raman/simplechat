@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title><%=settings.title%></title>
+		<script src="/socket.io/socket.io.js"></script>
+		<!--<script src="/js/lib/angular.min.js"></script>-->
+		<script src="/js/lib/jquery-1.11.2.js"></script>
+	</head>
+	<body>
+		<h2>Simple Chat</h2>
+		
+		<div id="chat_window" style="display:none;">
+			<div id="chat_message">
+				
+			</div>
+			<input type="button" id="chat_send" value="Send" />
+		</div>
+		<input type="text" id="chat_uname" name="chat_uname" />
+		<a href="#" id="chat_start">Start</a>
+		
+		<script src="/js/app/chat.js"></script>
+		<script>
+			$('document').ready(function()
+			{
+				Chat.init();
+			});
+		</script>
+	</body>
+</html>
