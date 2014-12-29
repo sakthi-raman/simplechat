@@ -10,19 +10,22 @@
 		<h2>Simple Chat</h2>
 		
 		<div id="chat_window" style="display:none;">
-			<div id="chat_message">
+			<ul id="chat_message">
 				
-			</div>
+			</ul>
+			<input type="text" id="chat_msg" name="chat_msg" value="" placeholder="Enter Your message" />
 			<input type="button" id="chat_send" value="Send" />
 		</div>
-		<input type="text" id="chat_uname" name="chat_uname" />
-		<a href="#" id="chat_start">Start</a>
+		<div id="chart_info">
+			<input type="text" id="chat_uname" name="chat_uname" value="" placeholder="Please enter your name" />
+			<a href="#" id="chat_start">Start</a>
+		</div>
 		
 		<script src="/js/app/chat.js"></script>
 		<script>
 			$('document').ready(function()
 			{
-				Chat.init();
+				Chat.init('<%=host%>');
 			});
 		</script>
 	</body>

@@ -22,7 +22,7 @@ var http		=	require('http').Server(app);
 var sockets		=	require('socket.io')(http);
 var route		=	require('./config/route');
 var util		=	require('./config/util');
-var users		=	[];
+//var users		=	[];
 var no_users	=	0;
 
 app
@@ -35,16 +35,45 @@ app
 
 sockets.on('connection', function(socket)
 {
-	console.info('Socket Connection');
-	socket.on('add user', function(data)
-	{
-		console.info('Add user') + data.uname;
-		++no_users;
-		socket.uname	=	data.uname;
-		users[no_users]	=	socket;
-		
-		socket.emit('user added', {uname : data.uname});
-	});
+	socket.is_typing	=	false;
+	
+	socket
+		.on('add user', function(data)
+		{
+			if(typeof socket[data.uname] !== 'undefined')
+				return;
+			
+			++no_users;
+			socket.uname	=	data.uname;
+			//users[no_users]	=	socket;
+
+			socket.emit('user added', {uname : data.uname});
+			socket.broadcast.emit('user joined', {uname : data.uname, no_users : no_users});
+		})
+		.on('send msg', function(data)
+		{
+			socket.emit('msg sent', {uname : socket.uname, msg : data.msg});
+			socket.broadcast.emit('msg broadcast', {uname : socket.uname, msg : data.msg});
+		})
+		.on('user typing', function()
+		{
+			if(socket.is_typing)
+				return;
+
+			socket.is_typing	=	true;
+
+			socket.broadcast.emit('user typing', {uname : socket.uname});
+		})
+		.on('user typing blur', function()
+		{
+			socket.is_typing	=	false;
+			socket.broadcast.emit('user typed', {uname : socket.uname});
+		})
+		.on('disconnect', function()
+		{
+			--no_users;
+			socket.broadcast.emit('user disconnected', {uname : socket.uname});
+		});
 });
 
 http.listen(config.port);
